@@ -1,0 +1,23 @@
+ {
+  "Research category/domain": "Healthcare (Oncology)",
+  "LLM used, if any": "Deep Learning",
+  "Datasets": "Radiological images for gastric cancer patients",
+  "Type of data": "Images",
+  "Machine Learning": "Yes",
+  "Deep Learning": "Yes",
+  "Specific algorithms": "Not explicitly mentioned, but uses Radiomics and Deep Learning Analyses (implies feature extraction with Radiomics and deep learning models like LSTM or Convolutional Neural Networks)",
+  "Languages": "Python",
+  "Libraries": "Scikit, Pytorch (implicit from using Deep Learning)",
+  "Funding for research": "NSF, NIH, NASA",
+  "Cross disciplinary stuff": "ML applications for cancer treatment and therapy tracking",
+  "Timeline": "5 year long research",
+  "Dataset size": "2,686 patients with gastric cancer",
+  "Problem type": "Classification (TME status prediction)",
+  "data-type": "Image",
+  "Ethical considerations": ["Bias detection", "Privacy", "Explainability", "Fairness in AI models"],
+  "Summary of innovation?": "Noninvasive approach to predict TME status from radiological images",
+  "Type of study": "Observational study using multi-institution cohorts",
+  "Code and reproducibility": "(No specific GitHub links provided)",
+  "Important citations": "Not explicitly mentioned in the abstract",
+  "Benchmarking": "Comparisons made against existing biomarkers for predicting clinical response in cancer patients"
+}
