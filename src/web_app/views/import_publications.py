@@ -2,10 +2,12 @@ import streamlit as st
 from services.db_service import get_db
 from controllers.researcher import get_researcher_by_orcid
 from controllers.publication import import_publications_from_online, include_publications
+from utils.constants import DIVIDER_COLOR
+from views.view_helper import central_subheader
 
 
 def import_publications_view():
-    st.title("Import Publications from Online Sources")
+    # st.subheader("Import Publications from Online Sources", divider=DIVIDER_COLOR)
     orcid = st.session_state.get("orcid", None)
 
     if not orcid:
@@ -18,9 +20,16 @@ def import_publications_view():
             st.error("Researcher not found. Please sign up first.")
             return
 
-        st.subheader("Fetched Publications")
-        # Retrieve transient Publication objects (not yet stored in the DB)
-        imported_publications = import_publications_from_online(db, researcher.id)
+        # st.subheader("Fetched Publications")
+        import_btn = st.button("Import Selected Publications", type="secondary")
+        # central_subheader("All Publications")
+
+        # Only import publications if not already in session_state
+        if "imported_publications" not in st.session_state:
+            with st.spinner("Importing publications, please wait..."):
+                st.session_state.imported_publications = import_publications_from_online(db, researcher.id)
+
+        imported_publications = st.session_state.imported_publications
         selected_indices = []
 
         if imported_publications:
@@ -29,7 +38,7 @@ def import_publications_view():
                 if st.checkbox(f"{pub.title} ({pub.year})", key=f"pub_{idx}", value=True):
                     selected_indices.append(idx)
 
-            if st.button("Include Selected Publications"):
+            if import_btn:
                 # Build a list of publication data dictionaries for selected publications.
                 publications_data = []
                 for idx in selected_indices:
@@ -40,8 +49,12 @@ def import_publications_view():
                         "abstract": pub.abstract,
                         "year": pub.year
                     })
-                # Include publications (insert into the DB) without duplicates.
-                created = include_publications(db, researcher.id, publications_data)
-                st.success(f"{len(created)} publications included.")
+
+                if publications_data:
+                    # Include publications (insert into the DB) without duplicates.
+                    created = include_publications(db, researcher.id, publications_data)
+                    st.success(f"{len(created)} new publications imported.")
+                else:
+                    st.error("No publications imported.")
         else:
             st.write("No publications were imported from online sources.")

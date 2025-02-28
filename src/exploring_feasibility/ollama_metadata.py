@@ -9,7 +9,7 @@ llm = OllamaLLM(
 prompt_text = """
     You are an expert research analyst. The goal is to create tags for grouping multiple publications on multiple categories.
     Instruction:
-        Look at the paper abstract and give me one or two keyword based information (like PubMed MeSH term) you can find based on the following categories and return a json formated string: 
+        Look at the paper abstract and give me 1-3 keyword based information (like PubMed MeSH term) you can find based on the following categories and return a json formated string: 
         The JSON output should contain the following keys with the instructions/examples below:
           - research_domain: One or two keywords representing the research domain (e.g., "Oncology", "Neuroscience").
           - llm_usage: One or two keywords indicating LLM usage (e.g., "GPT-4").
@@ -29,7 +29,7 @@ prompt_text = """
           - type_of_study: Keywords for study type (e.g., "Prospective", "Retrospective").
           - code_and_reproducibility: Keywords indicating code availability or reproducibility (e.g., "Open-source", "Not reproducible").
           - benchmarking: Keywords indicating benchmarking (e.g., "State-of-art", "Baseline").
-        If any information does not exist for a key, keep it empty. DO NOT make things up. 
+        If any information does not exist for a key, keep it empty. DO NOT make things up. Give me ONLY ONE keyword per category, DO NOT provide array.
         
         ENSURE the output is valid JSON.
         {

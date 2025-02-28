@@ -1,6 +1,6 @@
 from controllers.researcher import get_researcher_by_id
 from models.models import Publication
-from utils.importing_publications import get_publication_data
+from utils.web_scrapping_publications import get_publication_data
 
 def create_publication(db, researcher_id: int, title: str, abstract: str, year: int, doi: str) -> Publication:
     """

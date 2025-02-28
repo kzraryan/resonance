@@ -1,9 +1,9 @@
 from models.models import Researcher
 
 
-def create_researcher(db, orcid_id: str, full_name: str) -> Researcher:
+def create_researcher(db, orcid_id: str, full_name: str, department:str, position:str) -> Researcher:
     # Create a new Researcher record using the provided ORCID ID and full name.
-    new_researcher = Researcher(orcid_id=orcid_id, full_name=full_name)
+    new_researcher = Researcher(orcid_id=orcid_id, full_name=full_name, department=department, position=position)
     db.add(new_researcher)
     db.commit()
     db.refresh(new_researcher)

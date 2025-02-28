@@ -1,14 +1,15 @@
 # views/search_view.py
 import streamlit as st
 from services.db_service import get_db
-from controllers.search import search_research
+from controllers.search import search_research, search_wrapper
 from controllers.researcher import get_researcher_by_orcid
-
+from services.qdrant_service import get_vector_store
+from utils.constants import DIVIDER_COLOR
 
 
 def search_view():
-    st.title("Search Publications")
-    query = st.text_input("Enter your search query:")
+    st.subheader("Search Publications", divider=DIVIDER_COLOR)
+    search_text = st.text_input("Enter your search query:")
 
     if st.button("Search"):
         # Use the ORCID from session state (set during signup)
@@ -24,16 +25,13 @@ def search_view():
                 return
 
             # Initialize the Qdrant vectorstore using a collection name (here, using ORCID)
-            # vectorstore = get_vectorstore(collection_name=orcid)
-            # results = search_research(db, researcher.id, vectorstore, query, k=5)
-            #
-            # if results:
-            #     st.subheader("Search Results")
-            #     for result in results:
-            #         st.write(f"**Title:** {result.get('title')}")
-            #         st.write(f"**Publication ID:** {result.get('publication_id')}")
-            #         st.write(f"**Score:** {result.get('score')}")
-            #         st.write(f"**Metadata:** {result.get('metadata')}")
-            #         st.write("---")
-            # else:
-            #     st.write("No results found.")
+
+            results = search_wrapper(db, researcher.id,search_text, k=5)
+
+            print(results)
+
+            if results:
+                st.subheader("Search Results")
+                st.table(results)
+            else:
+                st.write("No results found.")

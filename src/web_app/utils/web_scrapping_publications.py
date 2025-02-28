@@ -57,9 +57,22 @@ def get_crossref_metadata(doi: str):
     if data.get("title"):
         metadata["title"] = data["title"][0] if len(data["title"]) > 0 else None
 
-    # Title may be a list in Crossref
-    if data.get("year"):
-        metadata["year"] = data["year"][0] if len(data["year"]) > 0 else None
+    # Extract publication year from one of the possible fields.
+    year = None
+    if "published-print" in data and "date-parts" in data["published-print"]:
+        date_parts = data["published-print"]["date-parts"]
+        if date_parts and len(date_parts[0]) >= 1:
+            year = date_parts[0][0]
+    elif "published-online" in data and "date-parts" in data["published-online"]:
+        date_parts = data["published-online"]["date-parts"]
+        if date_parts and len(date_parts[0]) >= 1:
+            year = date_parts[0][0]
+    elif "issued" in data and "date-parts" in data["issued"]:
+        date_parts = data["issued"]["date-parts"]
+        if date_parts and len(date_parts[0]) >= 1:
+            year = date_parts[0][0]
+
+    metadata["year"] = year
 
     # Abstract is sometimes present under "abstract"
     if data.get("abstract"):
@@ -121,6 +134,7 @@ def get_publication_data(orcid_ids):
     all_publication_data = []
     for orcid_id in orcid_ids:
         works = get_orcid_works(orcid_id["orcid_id"])
+        print(f"Works for {orcid_id['orcid_id']}: len={len(works)}")
         for work in works:
             publication_data = get_crossref_metadata(work["doi"])
             if publication_data is None or publication_data["abstract"] is None:
