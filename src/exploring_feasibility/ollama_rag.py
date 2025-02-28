@@ -1,14 +1,11 @@
-import json
-
-from langchain_core.documents import Document
-from collecting_research_using_orchid import get_research_data
-from langchain.vectorstores import Qdrant
+from collecting_research_using_orcid import get_research_data
+from langchain_community.vectorstores import Qdrant
 from langchain_ollama import OllamaEmbeddings
-from qdrant_client import QdrantClient
 
 EMBED_MODEL = "nomic-embed-text:latest"
 LLM_MODEL = "deepseek-r1:latest"
 OLLAMA_URL = "http://localhost:11434/api"
+QDRANT_URL = "http://localhost:6333"
 
 
 
@@ -19,11 +16,18 @@ def create_vector_embeddings(langchain_documents):
         model=EMBED_MODEL,
         # base_url= f'{OLLAMA_URL}/embed',
     )
+    # store = Qdrant.from_documents(
+    #     langchain_documents,
+    #     embeddings,
+    #     path="./tmp/test_run_9",
+    #     collection_name="AI-Embeddings",
+    # )
     store = Qdrant.from_documents(
         langchain_documents,
         embeddings,
-        path="./tmp/test_run_9",
-        collection_name="AI-Embeddings",
+        url=QDRANT_URL,
+        prefer_grpc = False,
+        collection_name="test_run_1",
     )
 
     return store
@@ -48,4 +52,6 @@ if __name__ == "__main__":
 
     for i, (doc, score) in enumerate(res):
         print(doc.metadata['research_id'],doc.metadata['title'])
+
+
 
