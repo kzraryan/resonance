@@ -1,8 +1,10 @@
+import pandas as pd
 import streamlit as st
 from services.db_service import get_db
 from controllers.publication import get_publications_by_researcher
 from controllers.researcher import get_all_researchers
 from utils.constants import DIVIDER_COLOR
+from st_aggrid import AgGrid
 
 
 def exploration_view():
@@ -31,11 +33,12 @@ def exploration_view():
                             "researcher": researcher.full_name,
                             "orcid": researcher.orcid_id,
                             "title": pub.title,
-                            "year": pub.year,
+                            "year": str(pub.year),
                             "doi": pub.doi
                         })
                     if all_publications:
                         st.dataframe(all_publications)
+                        # AgGrid(pd.DataFrame(all_publications))
                     else:
                         st.warning("No publications found.")
 

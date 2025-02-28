@@ -1,7 +1,8 @@
 import streamlit as st
 
-from utils.constants import MENU_IMPORT_PUBLICATION, MENU_EXPLORE, MENU_PUBLICATIONS, MENU_PROFILE
-from views import signup, search, import_publications, researchers, profile
+from utils.constants import MENU_IMPORT_PUBLICATION, MENU_EXPLORE, MENU_PUBLICATIONS, MENU_PROFILE, MENU_VISUALIZE, \
+    MENU_CODE_SPACE
+from views import signup, search, import_publications, researchers, profile, visualize
 from streamlit_option_menu import option_menu
 
 
@@ -32,8 +33,8 @@ def main():
             add_logo()
             selected = option_menu(
                 menu_title=None,  # No title to show
-                options=[MENU_IMPORT_PUBLICATION, MENU_EXPLORE, MENU_PUBLICATIONS, MENU_PROFILE],
-                icons=["upload", "search", "book", "person-circle"],  # appropriate icons from Bootstrap Icons
+                options=[MENU_IMPORT_PUBLICATION, MENU_EXPLORE, MENU_PUBLICATIONS, MENU_CODE_SPACE, MENU_VISUALIZE, MENU_PROFILE],
+                icons=["upload", "search", "book", "code", "bar-chart", "person-circle"],  # appropriate icons from Bootstrap Icons
                 menu_icon="cast",
                 default_index=0,
                 orientation="vertical",
@@ -52,6 +53,10 @@ def main():
             search.search_view()
         elif selected == MENU_PUBLICATIONS:
             researchers.exploration_view()
+        elif selected == MENU_CODE_SPACE:
+            researchers.exploration_view()
+        elif selected == MENU_VISUALIZE:
+            visualize.visualize_view()
         elif selected == MENU_PROFILE:
             profile.exploration_view()
 
