@@ -6,6 +6,7 @@ METADATA_LLM_MODEL = "deepseek-r1:32b"
 
 DATABASE_NAME = 'resonance'
 PUBLICATION_VECTOR_DATABASE_NAME = 'publication_vector'
+LOINC_VECTOR_DATABASE_NAME = 'loinc_vector'
 
 QDRANT_URL = "http://localhost:6333"
 
